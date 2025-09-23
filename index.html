@@ -3,545 +3,652 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Image Generator</title>
+    <title>DARK-TECH-ZONE | Premium Tools</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        :root {
-            --primary-color: #0077ff;
-            --secondary-color: #00ccff;
-            --dark-bg: linear-gradient(135deg, #1a1a2e, #16213e);
-            --light-bg: linear-gradient(135deg, #f5f7fa, #e4e8f0);
-            --text-dark: #333;
-            --text-light: #f0f0f0;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            --border-radius: 12px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        [data-theme="light"] {
-            --primary-color: #0077ff;
-            --secondary-color: #00ccff;
-            --dark-bg: var(--light-bg);
-            --light-bg: var(--dark-bg);
-            --text-dark: #f0f0f0;
-            --text-light: #333;
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --dark: #0c0e2a;
+            --darker: #070917;
+            --light: #f1f1f1;
+            --gray: #a0a0d0;
+            --card-bg: rgba(25, 28, 60, 0.8);
+            --success: #00d26a;
+            --danger: #ff3860;
         }
         
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--dark-bg);
-            color: var(--text-light);
-            margin: 0;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: background 0.3s ease;
+            overflow-x: hidden;
         }
         
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        /* Header Styles */
         header {
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .header-btn {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .header-btn:hover {
-            transform: scale(1.1);
-            color: var(--primary-color);
-        }
-        
-        .main-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            gap: 20px;
-        }
-        
-        .generator-container {
-            width: 100%;
-            max-width: 800px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-        }
-        
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        #prompt-input {
-            flex: 1;
-            padding: 12px 15px;
-            border: none;
-            border-radius: var(--border-radius);
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            transition: background 0.3s;
-        }
-        
-        #prompt-input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        #prompt-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        #generate-btn {
-            background: var(--primary-color);
-            border: none;
-            cursor: pointer;
-            border-radius: var(--border-radius);
-            padding: 0 20px;
-            font-weight: 600;
-            transition: all 0.3s;
-            color: #000;
-        }
-        
-        #generate-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-        
-        #generate-btn:disabled {
-            background: #666;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .style-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        
-        .style-btn {
-            padding: 8px 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
+            text-align: center;
+            padding: 40px 0;
+            background: rgba(16, 18, 42, 0.8);
             border-radius: 20px;
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-        
-        .style-btn:hover, .style-btn.active {
-            background: var(--primary-color);
-            color: #000;
-        }
-        
-        .result-container {
-            width: 100%;
-            min-height: 300px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--border-radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
         }
         
-        .generated-image {
-            max-width: 100%;
-            max-height: 70vh;
-            border-radius: var(--border-radius);
-            display: none;
-        }
-        
-        .placeholder-text {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 1.1rem;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .loading-indicator {
-            display: none;
+        header::before {
+            content: '';
             position: absolute;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
         
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .logo {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            text-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
         }
         
-        .loading-text {
-            color: var(--primary-color);
-            font-weight: 500;
+        .tagline {
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 25px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            justify-content: center;
-        }
-        
-        .action-btn {
-            padding: 8px 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: var(--border-radius);
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        footer {
+        .update-notice {
+            background: rgba(37, 117, 252, 0.2);
             padding: 15px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            font-size: 0.9rem;
-        }
-        
-        .social-links {
+            border-radius: 10px;
+            max-width: 700px;
+            margin: 0 auto;
+            border-left: 4px solid var(--secondary);
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
+        }
+        
+        /* Tools Grid */
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin: 40px 0 30px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .tool-card:hover::before {
+            left: 100%;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(33, 36, 75, 0.9);
+        }
+        
+        .tool-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, var(--primary) 0%, var(--secondary) 100%);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+        }
+        
+        .tool-icon img {
+            width: 70%;
+            height: 70%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .tool-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tool-desc {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+        
+        .access-key-hint {
+            font-size: 0.9rem;
+            color: var(--secondary);
             margin-top: 10px;
+            font-style: italic;
         }
         
-        .social-link {
-            color: var(--text-light);
-            font-size: 1.2rem;
-            transition: color 0.3s, transform 0.3s;
+        .coming-soon {
+            position: relative;
+            opacity: 0.7;
         }
         
-        .social-link:hover {
-            color: var(--primary-color);
-            transform: scale(1.2);
+        .coming-soon::after {
+            content: 'COMING SOON';
+            position: absolute;
+            top: 10px;
+            right: -30px;
+            background: var(--danger);
+            color: white;
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 56, 96, 0.5);
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            background: rgba(16, 18, 42, 0.8);
+            border-radius: 20px;
+            margin-top: 50px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .copyright {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .powered-by {
+            font-size: 1rem;
+            color: #6a7c94;
+        }
+        
+        .powered-by a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .powered-by a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: rgba(25, 28, 60, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: modalAppear 0.4s ease;
+        }
+        
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal h3 {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .modal p {
+            margin-bottom: 25px;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .key-input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid var(--secondary);
+            background: rgba(16, 18, 42, 0.8);
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .key-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(106, 17, 203, 0.5);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .error-message {
+            color: var(--danger);
+            margin-top: 10px;
+            font-size: 1rem;
+            display: none;
+        }
+        
+        .hint {
+            color: var(--secondary);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
         }
         
         @media (max-width: 768px) {
-            .input-group {
-                flex-direction: column;
+            .logo {
+                font-size: 2.5rem;
             }
             
-            #generate-btn {
-                padding: 12px;
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+                gap: 20px;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .tool-name {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">AI Image Generator</div>
-        <div class="header-actions">
-            <button class="header-btn" id="theme-btn" title="Toggle Theme">
-                <i class="fas fa-moon"></i>
-            </button>
+    <div class="container">
+        <header>
+            <h1 class="logo">DARK-TECH-ZONE</h1>
+            <p class="tagline">Premium Tools with Advanced Security - Unlock with Individual Access Keys</p>
+            <div class="update-notice">
+                <i class="fas fa-shield-alt"></i> Each tool requires a unique access key for enhanced security
+            </div>
+        </header>
+        
+        <h2 class="section-title">Available Tools</h2>
+        <div class="tools-grid" id="availableTools">
+            <!-- Available tools will be generated by JavaScript -->
         </div>
-    </header>
-    
-    <div class="main-container">
-        <div class="generator-container">
-            <div class="input-group">
-                <input type="text" id="prompt-input" placeholder="Describe the image you want to generate...">
-                <button id="generate-btn" disabled>
-                    <i class="fas fa-magic"></i> Generate
-                </button>
-            </div>
-            
-            <div class="style-options">
-                <button class="style-btn active" data-style="default">Default</button>
-                <button class="style-btn" data-style="realistic">Realistic</button>
-                <button class="style-btn" data-style="anime">Anime</button>
-                <button class="style-btn" data-style="cyberpunk">Cyberpunk</button>
-                <button class="style-btn" data-style="fantasy">Fantasy</button>
-                <button class="style-btn" data-style="watercolor">Watercolor</button>
-            </div>
-            
-            <div class="result-container">
-                <div class="placeholder-text">
-                    Your generated image will appear here. Enter a prompt and click "Generate".
-                </div>
-                <img id="generated-image" class="generated-image" alt="Generated image">
-                <div class="loading-indicator">
-                    <div class="spinner"></div>
-                    <div class="loading-text">Generating your image...</div>
-                </div>
-            </div>
-            
-            <div class="action-buttons">
-                <button id="download-btn" class="action-btn" disabled>
-                    <i class="fas fa-download"></i> Download
-                </button>
-                <button id="copy-btn" class="action-btn" disabled>
-                    <i class="fas fa-copy"></i> Copy Link
-                </button>
-                <button id="new-btn" class="action-btn">
-                    <i class="fas fa-plus"></i> New Image
-                </button>
+        
+        <h2 class="section-title">Coming Soon</h2>
+        <div class="tools-grid" id="comingSoonTools">
+            <!-- Coming soon tools will be generated by JavaScript -->
+        </div>
+        
+        <footer>
+            <p class="copyright">© 2023 DARK-TECH-ZONE. All rights reserved.</p>
+            <p class="powered-by">Powered by <a href="#">Hassnain Ali</a></p>
+        </footer>
+    </div>
+
+    <!-- Access Key Modal -->
+    <div class="modal" id="accessModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-lock"></i> Access Required</h3>
+            <p id="toolName">Please enter the access key for this tool:</p>
+            <p class="hint" id="keyHint">Enter the correct access key to unlock this tool</p>
+            <input type="password" class="key-input" id="accessKeyInput" placeholder="Enter access key">
+            <p class="error-message" id="errorMessage">Incorrect access key. Please try again.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="submitBtn">Submit</button>
             </div>
         </div>
     </div>
-    
-    <footer>
-        <div>Advanced AI Image Generator</div>
-        <div class="social-links">
-            <a href="https://whatsapp.com/channel/0029VbAtdFcJuyA66uAkUz0R" class="social-link" target="_blank" title="WhatsApp Channel">
-                <i class="fab fa-whatsapp"></i>
-            </a>
-            <a href="https://github.com/kinghacker756" class="social-link" target="_blank" title="GitHub">
-                <i class="fab fa-github"></i>
-            </a>
-        </div>
-    </footer>
-    
+
     <script>
-        // DOM Elements
-        const promptInput = document.getElementById('prompt-input');
-        const generateBtn = document.getElementById('generate-btn');
-        const styleBtns = document.querySelectorAll('.style-btn');
-        const resultContainer = document.querySelector('.result-container');
-        const generatedImage = document.getElementById('generated-image');
-        const placeholderText = document.querySelector('.placeholder-text');
-        const loadingIndicator = document.querySelector('.loading-indicator');
-        const downloadBtn = document.getElementById('download-btn');
-        const copyBtn = document.getElementById('copy-btn');
-        const newBtn = document.getElementById('new-btn');
-        const themeBtn = document.getElementById('theme-btn');
+        // List of available tools with their access keys and links
+        const availableTools = [
+            { 
+                name: "WhatsApp Ban Tool Source Code", 
+                desc: "Full Working WhatsApp Ban Tool Source Codes",
+                accessKey: "Tech Zone",
+                link: "https://www.mediafire.com/file/m2mm4ko9gzv1a17/bansoure.html/file"
+            },
+            { 
+                name: "HTML Live Editor Source Code", 
+                desc: "Edit Your Html Live",
+                accessKey: "DARK-TECH",
+                link: "https://www.mediafire.com/file/4q7iz03lp2qy5t6/editorsource.html/file"
+            },
+            { 
+                name: "Image Magic Tool Source Code", 
+                desc: "Imagine your Image",
+                accessKey: "DARK-ZONE",
+                link: "https://www.mediafire.com/file/9ou0vbanppfxckg/imagemagicsource.html/file"
+            },
+            { 
+                name: "Sms Bomber Source Code", 
+                desc: "Full Working Sms Bomber Source Code",
+                accessKey: "DARK-ZONE",
+                link: "https://www.mediafire.com/file/a3qlecq829wbu04/sms.html/file"
+            },
+            { 
+                name: "HTML ENCRYPTER Source Code", 
+                desc: "HTML Code Encryptor Tool Source Code",
+                accessKey: "DARK-TECH ICAL",
+                link: "https://www.mediafire.com/file/a8j7ymhpgdgitbk/Source.html/file"
+            },
+            { 
+                name: "Teen Paati Hack Source Codes", 
+                desc: "TeenPatti Hack Source Codes",
+                accessKey: "TEEN-ZONE",
+                link: "https://www.mediafire.com/file/bwssslzeiaolt1y/teenpattisource.html/file"
+            },
+            { 
+                name: "WaterMark Tool Source Code", 
+                desc: "WaterMark Adder On Image Tool Source Code",
+                accessKey: "WATER-TECH",
+                link: "https://www.mediafire.com/file/fjrm33jz8p0yb5n/WATERMARK_TOOL.zip.bak/file"
+            },
+            { 
+                name: "YT Free Views Source Code", 
+                desc: "YouTube Unlimited Views Tool Source Code",
+                accessKey: "YT-TECH",
+                link: "https://www.mediafire.com/file/1g9srgz33n85byj/Ytsource.html/file"
+            },
+            { 
+                name: "WhatsApp Unban Tool Source Code", 
+                desc: "WhatsApp Unban Tool Source Code",
+                accessKey: "UNBAN-TECH",
+                link: "https://www.mediafire.com/file/78gy2mstam1anx4/index.html/file"
+            },
+            { 
+                name: "Currency Exchanger Tool Source Code", 
+                desc: "Currency Exchanger Tool Source Code",
+                accessKey: "EXCHANGE-TECH",
+                link: "https://www.mediafire.com/file/5o2ofaewjdhf9fa/currency.html/file"
+            },
+            { 
+                name: "Image Resizer Tool Source Code", 
+                desc: "Image Resizer Tool Source Code",
+                accessKey: "RESIZER-TECH",
+                link: "https://www.mediafire.com/file/g85os5d6gi7p9tc/imageresizer.html/file"
+            }
+        ];
         
-        // State variables
-        let currentStyle = 'default';
-        let currentImageUrl = '';
-        let currentTheme = 'dark';
+        // List of coming soon tools
+        const comingSoonTools = [
+            { name: "Video Downloader Pro", desc: "Download videos from multiple platforms" },
+            { name: "Audio Extractor", desc: "Extract audio from any video file" },
+            { name: "PDF Editor Tool", desc: "Edit PDF documents online" },
+            { name: "Password Generator", desc: "Generate strong and secure passwords" },
+            { name: "QR Code Generator", desc: "Create custom QR codes" },
+            { name: "File Converter", desc: "Convert files between different formats" },
+            { name: "Website Analyzer", desc: "Analyze website performance and SEO" },
+            { name: "Code Minifier", desc: "Minify your HTML, CSS, and JavaScript" },
+            { name: "Image Compressor", desc: "Compress images without losing quality" },
+            { name: "Text Encryptor", desc: "Encrypt and decrypt text messages" },
+            { name: "URL Shortener", desc: "Shorten long URLs easily" },
+            { name: "Social Media Manager", desc: "Manage all your social accounts" },
+            { name: "Data Backup Tool", desc: "Backup your important data" },
+            { name: "System Cleaner", desc: "Clean and optimize your system" }
+        ];
         
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadTheme();
+        const availableToolsGrid = document.getElementById('availableTools');
+        const comingSoonToolsGrid = document.getElementById('comingSoonTools');
+        const modal = document.getElementById('accessModal');
+        const keyInput = document.getElementById('accessKeyInput');
+        const errorMessage = document.getElementById('errorMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const toolNameElement = document.getElementById('toolName');
+        const keyHint = document.getElementById('keyHint');
+        
+        let currentToolLink = '';
+        let currentToolAccessKey = '';
+        
+        // Generate available tool cards
+        availableTools.forEach(tool => {
+            const toolCard = document.createElement('div');
+            toolCard.className = 'tool-card';
             
-            // Set up event listeners for style buttons
-            styleBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    styleBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentStyle = btn.dataset.style;
-                });
+            toolCard.innerHTML = `
+                <div class="tool-icon">
+                    <img src="https://fak-h.jokerkeep057.workers.dev/YdhwS" alt="${tool.name} Icon">
+                </div>
+                <h3 class="tool-name">${tool.name}</h3>
+                <p class="tool-desc">${tool.desc}</p>
+                <p class="access-key-hint">Access Key: ${tool.accessKey}</p>
+            `;
+            
+            // Add click event to show access modal
+            toolCard.addEventListener('click', () => {
+                currentToolLink = tool.link;
+                currentToolAccessKey = tool.accessKey;
+                
+                // Update modal content
+                toolNameElement.textContent = `Please enter the access key for "${tool.name}":`;
+                keyHint.textContent = `Access Key: ${tool.accessKey}`;
+                
+                modal.style.display = 'flex';
+                keyInput.value = '';
+                errorMessage.style.display = 'none';
+                keyInput.focus();
             });
+            
+            availableToolsGrid.appendChild(toolCard);
         });
         
-        // Event Listeners
-        promptInput.addEventListener('input', () => {
-            generateBtn.disabled = promptInput.value.trim() === '';
+        // Generate coming soon tool cards
+        comingSoonTools.forEach(tool => {
+            const toolCard = document.createElement('div');
+            toolCard.className = 'tool-card coming-soon';
+            
+            toolCard.innerHTML = `
+                <div class="tool-icon">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <h3 class="tool-name">${tool.name}</h3>
+                <p class="tool-desc">${tool.desc}</p>
+                <p class="access-key-hint">Tool coming soon</p>
+            `;
+            
+            // Add click event to redirect to WhatsApp channel
+            toolCard.addEventListener('click', () => {
+                window.location.href = "https://whatsapp.com/channel/0029VbBPXH5J3jv6YXsgrL1t";
+            });
+            
+            comingSoonToolsGrid.appendChild(toolCard);
         });
         
-        promptInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !generateBtn.disabled) {
-                generateImage();
+        // Submit access key
+        submitBtn.addEventListener('click', () => {
+            const enteredKey = keyInput.value.trim();
+            
+            if (enteredKey === currentToolAccessKey) {
+                // Add https:// if not present
+                let url = currentToolLink;
+                if (!url.startsWith('http')) {
+                    url = 'https://' + url;
+                }
+                window.location.href = url;
+            } else {
+                errorMessage.style.display = 'block';
+                keyInput.focus();
+                keyInput.select();
             }
         });
         
-        generateBtn.addEventListener('click', generateImage);
+        // Cancel access modal
+        cancelBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
         
-        downloadBtn.addEventListener('click', downloadImage);
+        // Allow Enter key to submit
+        keyInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitBtn.click();
+            }
+        });
         
-        copyBtn.addEventListener('click', copyImageLink);
-        
-        newBtn.addEventListener('click', resetGenerator);
-        
-        themeBtn.addEventListener('click', toggleDarkMode);
-        
-        // Functions
-        function generateImage() {
-            const prompt = promptInput.value.trim();
-            if (!prompt) return;
-            
-            // Show loading state
-            placeholderText.style.display = 'none';
-            generatedImage.style.display = 'none';
-            loadingIndicator.style.display = 'flex';
-            
-            // Disable buttons during generation
-            generateBtn.disabled = true;
-            promptInput.disabled = true;
-            
-            // Prepare API URL
-            const apiUrl = `https://text2img.hideme.eu.org/image?prompt=${encodeURIComponent(prompt)}&model=flux&style=${currentStyle}`;
-            
-            // For demo purposes, we'll simulate the API call with a timeout
-            // In production, you would use fetch() with proper error handling
-            setTimeout(() => {
-                // Simulate successful response
-                currentImageUrl = apiUrl; // In real use, this would be the actual image URL from the API
-                
-                // Display the generated image
-                generatedImage.src = currentImageUrl;
-                generatedImage.onload = () => {
-                    loadingIndicator.style.display = 'none';
-                    generatedImage.style.display = 'block';
-                    enableActionButtons();
-                };
-                
-                generatedImage.onerror = () => {
-                    loadingIndicator.style.display = 'none';
-                    placeholderText.style.display = 'block';
-                    placeholderText.textContent = 'Failed to generate image. Please try again.';
-                    resetInputs();
-                };
-                
-            }, 2000);
-            
-            // Actual implementation would look like this:
-            /*
-            fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.blob();
-                })
-                .then(blob => {
-                    currentImageUrl = URL.createObjectURL(blob);
-                    generatedImage.src = currentImageUrl;
-                    generatedImage.onload = () => {
-                        loadingIndicator.style.display = 'none';
-                        generatedImage.style.display = 'block';
-                        enableActionButtons();
-                    };
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    loadingIndicator.style.display = 'none';
-                    placeholderText.style.display = 'block';
-                    placeholderText.textContent = 'Failed to generate image. Please try again.';
-                    resetInputs();
-                });
-            */
-        }
-        
-        function enableActionButtons() {
-            downloadBtn.disabled = false;
-            copyBtn.disabled = false;
-            generateBtn.disabled = false;
-            promptInput.disabled = false;
-        }
-        
-        function downloadImage() {
-            if (!currentImageUrl) return;
-            
-            const a = document.createElement('a');
-            a.href = currentImageUrl;
-            a.download = `ai-generated-image-${Date.now()}.jpg`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-        
-        function copyImageLink() {
-            if (!currentImageUrl) return;
-            
-            navigator.clipboard.writeText(currentImageUrl)
-                .then(() => {
-                    const originalText = copyBtn.innerHTML;
-                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    setTimeout(() => {
-                        copyBtn.innerHTML = originalText;
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error('Failed to copy:', err);
-                });
-        }
-        
-        function resetGenerator() {
-            promptInput.value = '';
-            promptInput.focus();
-            generatedImage.src = '';
-            generatedImage.style.display = 'none';
-            placeholderText.style.display = 'block';
-            placeholderText.textContent = 'Your generated image will appear here. Enter a prompt and click "Generate".';
-            downloadBtn.disabled = true;
-            copyBtn.disabled = true;
-            generateBtn.disabled = true;
-            currentImageUrl = '';
-        }
-        
-        function resetInputs() {
-            generateBtn.disabled = false;
-            promptInput.disabled = false;
-        }
-        
-        function toggleDarkMode() {
-            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.body.setAttribute('data-theme', currentTheme);
-            
-            // Update theme button icon
-            const icon = themeBtn.querySelector('i');
-            icon.className = currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-            
-            // Save to localStorage
-            localStorage.setItem('theme', currentTheme);
-        }
-        
-        function loadTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            currentTheme = savedTheme;
-            document.body.setAttribute('data-theme', currentTheme);
-            
-            // Set theme button icon
-            const icon = themeBtn.querySelector('i');
-            icon.className = currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-        }
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
